@@ -1,7 +1,8 @@
 // com/projectwz/partsforecast/entity/DatasumEntry.java
 package com.projectwz.partsforecast.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;

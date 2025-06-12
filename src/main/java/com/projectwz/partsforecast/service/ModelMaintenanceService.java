@@ -16,7 +16,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification; // 用于搜索
 import org.springframework.stereotype.Service;
-import jakarta.persistence.criteria.Predicate; // 用于搜索
+import javax.persistence.criteria.Predicate; // 用于搜索
+//import jakarta.persistence.criteria.Predicate; // 用于搜索
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value; // 用于从配置文件读取Flask URL
 import org.springframework.scheduling.annotation.Async; // 导入异步注解

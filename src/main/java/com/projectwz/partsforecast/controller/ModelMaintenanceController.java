@@ -11,7 +11,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid; // 导入 @Valid
+//import jakarta.validation.Valid; // 导入 @Valid
+import javax.validation.Valid; // 导入 @Valid
 import org.slf4j.Logger; // 导入日志库
 import org.slf4j.LoggerFactory; // 导入日志库
 

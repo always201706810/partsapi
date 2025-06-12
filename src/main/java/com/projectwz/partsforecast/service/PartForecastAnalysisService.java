@@ -10,7 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.criteria.Predicate; // JPA Criteria API
+//import jakarta.persistence.criteria.Predicate; // JPA Criteria API
+import javax.persistence.criteria.Predicate; // JPA Criteria API
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -186,7 +187,8 @@ public class PartForecastAnalysisService {
             partInfoOptional = partsInfoRepository.findByPartCode(partIdOrCode);
         }
 
-        if (partInfoOptional.isEmpty()) {
+//        if (partInfoOptional.isEmpty()) {
+        if (!partInfoOptional.isPresent()) {
             return null; // 或者抛出 PartNotFoundException
         }
         PartsInfo part = partInfoOptional.get();
@@ -223,7 +225,8 @@ public class PartForecastAnalysisService {
 
     public PartAnalysisDataDTO getPartAnalysisData(String partIdentifier, int historyMonths, int futureForecastPeriods) {
         Optional<PartsInfo> partInfoOptional = findPartsInfoByIdOrCode(partIdentifier); // 你需要实现这个辅助方法
-        if (partInfoOptional.isEmpty()) {
+//        if (partInfoOptional.isEmpty()) {
+        if (!partInfoOptional.isPresent()) {
             return null; // 或者抛出异常
         }
         PartsInfo part = partInfoOptional.get();

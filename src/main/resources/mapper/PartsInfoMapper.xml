@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.PartsInfoMapper">
+    <select id="findAllWithFilter" parameterType="map" resultType="com.projectwz.partsforecast.entity.PartsInfo">
+        SELECT * FROM parts_info
+        <where>
+            <if test="agentId != null">
+                agent_id = #{agentId}
+            </if>
+            <if test="category != null and category != ''">
+                AND part_type = #{category}
+            </if>
+            <if test="subCategory != null and subCategory != ''">
+                AND part_spec = #{subCategory}
+            </if>
+            <if test="nameFilter != null and nameFilter != ''">
+                AND part_name LIKE CONCAT('%', #{nameFilter}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="countByAgentInfoId" resultType="long">
+        SELECT COUNT(*) FROM parts_info
+        WHERE agent_id = #{agentId}
+    </select>
+</mapper>

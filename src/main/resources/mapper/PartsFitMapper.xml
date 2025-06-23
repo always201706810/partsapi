@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.PartsFitMapper">
+    <select id="findTopProfitableParts" resultType="map">
+        SELECT TOP ${limit}
+        pf.fit_part_id as partId,
+        pi.part_name as partName,
+        SUM(pf.fit_part_price) as value
+        FROM parts_fit pf
+        JOIN parts_info pi ON pf.fit_part_id = pi.id
+        <where>
+            <if test="agentId != null">
+                pf.agent_id = #{agentId}
+            </if>
+        </where>
+        GROUP BY pf.fit_part_id, pi.part_name
+        ORDER BY value DESC
+    </select>
+
+    <select id="findByPartsInfoId" resultType="com.projectwz.partsforecast.entity.PartsFit">
+        SELECT TOP ${limit} * FROM parts_fit WHERE fit_part_id = #{partsId}
+    </select>
+
+    <select id="findByPartsInfoIdAndFitDateBetweenOrderByFitDateAsc" resultType="com.projectwz.partsforecast.entity.PartsFit">
+        SELECT * FROM parts_fit
+        WHERE fit_part_id = #{partsId}
+          AND fit_date BETWEEN #{startDate} AND #{endDate}
+        ORDER BY fit_date ASC
+    </select>
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.PartsPurchaseMapper">
+    <select id="findByPartsInfoIdOrderByBuyDateDesc" resultType="com.projectwz.partsforecast.entity.PartsPurchase">
+        SELECT TOP ${limit} * FROM parts_purchase
+        WHERE buy_part_id = #{partsId}
+        ORDER BY buy_date DESC
+    </select>
+</mapper>

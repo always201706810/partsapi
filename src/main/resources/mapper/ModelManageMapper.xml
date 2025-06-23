@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.ModelManageMapper">
+
+    <resultMap id="ModelManageResultMap" type="com.projectwz.partsforecast.entity.ModelManage">
+        <id property="id" column="id"/>
+        <result property="modelName" column="model_name"/>
+        <result property="modelType" column="model_type"/>
+        <result property="modelDescribe" column="model_describe"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="trainTime" column="train_time"/>
+        <result property="status" column="status" typeHandler="com.projectwz.partsforecast.typehandler.ModelStatusTypeHandler"/>
+        <association property="agentInfo" javaType="com.projectwz.partsforecast.entity.AgentInfo">
+            <id property="id" column="agent_id"/>
+            <result property="agentName" column="agent_name"/>
+        </association>
+    </resultMap>
+
+    <select id="searchModels" parameterType="map" resultMap="ModelManageResultMap">
+        SELECT m.*, a.agent_name FROM model_manage m LEFT JOIN agent_info a ON m.agent_id = a.id
+        <where>
+            m.is_deleted = 0
+            <if test="nameQuery != null and nameQuery != ''">
+                AND m.model_name LIKE CONCAT('%', #{nameQuery}, '%')
+            </if>
+            <if test="creationStart != null">
+                AND m.create_time &gt;= #{creationStart}
+            </if>
+            <if test="creationEnd != null">
+                AND m.create_time &lt;= #{creationEnd}
+            </if>
+            <if test="trainingStart != null">
+                AND m.train_time &gt;= #{trainingStart}
+            </if>
+            <if test="trainingEnd != null">
+                AND m.train_time &lt;= #{trainingEnd}
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="ModelManageResultMap">
+        SELECT m.*, a.agent_name FROM model_manage m LEFT JOIN agent_info a ON m.agent_id = a.id WHERE m.id = #{modelId}
+    </select>
+
+    <insert id="insert" parameterType="com.projectwz.partsforecast.entity.ModelManage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO model_manage (model_name, agent_id, model_type, model_describe, is_deleted, create_time, status)
+        VALUES (#{modelName}, #{agentInfo.id}, #{modelType}, #{modelDescribe}, 0, #{createTime}, #{status, typeHandler=com.projectwz.partsforecast.typehandler.ModelStatusTypeHandler})
+    </insert>
+
+    <update id="update" parameterType="com.projectwz.partsforecast.entity.ModelManage">
+        UPDATE model_manage
+        <set>
+            <if test="modelName != null">model_name = #{modelName},</if>
+            <if test="trainTime != null">train_time = #{trainTime},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="status != null">status = #{status, typeHandler=com.projectwz.partsforecast.typehandler.ModelStatusTypeHandler},</if>
+            <if test="modelDescribe != null">model_describe = #{modelDescribe},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

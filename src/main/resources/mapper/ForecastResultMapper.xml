@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.ForecastResultMapper">
+    <select id="findByPartsInfoIdAndForecastTimeGreaterThanEqualOrderByForecastTimeAsc" resultType="ForecastResult">
+        SELECT TOP ${limit} * FROM forecast_result
+        WHERE parts_id = #{partsId} AND forecast_time >= #{startTime}
+        ORDER BY forecast_time ASC
+    </select>
+
+<!--    <select id="findTopByPartsInfoIdOrderByForecastTimeDesc" resultType="ForecastResult">-->
+<!--        SELECT TOP 1 * FROM forecast_result-->
+<!--        WHERE parts_id = #{partsId}-->
+<!--        ORDER BY forecast_time DESC-->
+<!--    </select>-->
+
+    <select id="findTopByPartsInfoIdOrderByForecastTimeDesc" resultType="com.projectwz.partsforecast.entity.ForecastResult">
+        -- 已更改: 查询逻辑修正为获取从当前时间开始，最接近的一条未来预测
+        SELECT TOP 1 * FROM forecast_result
+        WHERE
+            parts_id = #{partsId}
+          AND forecast_time >= GETDATE() -- GETDATE() 是 SQL Server 获取当前时间的函数
+        ORDER BY
+            forecast_time ASC
+    </select>
+</mapper>

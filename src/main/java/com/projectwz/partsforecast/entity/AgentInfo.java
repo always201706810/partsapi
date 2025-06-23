@@ -1,45 +1,20 @@
 // com/projectwz/partsforecast/entity/AgentInfo.java
 package com.projectwz.partsforecast.entity;
 
-//import jakarta.persistence.*;
-import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.List;
 
-@Entity
-@Table(name = "agent_info")
+// 已移除 @Entity, @Table 等注解
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AgentInfo {
-    @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY) // SQL PK is int, not auto-incremented by default in provided DDL
-    @Column(name = "id")
-    private Integer id; // 代理商ID (SQL is INT, not auto-inc)
+    // 已移除 @Id, @Column 等注解
+    private Integer id;
 
-    @Column(name = "agent_name")
-    private String agentName; // 代理商名称
+    private String agentName;
 
-    @OneToMany(mappedBy = "agentInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PartsInfo> partsInfos;
-
-    @OneToMany(mappedBy = "agentInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PartsSale> partsSales;
-
-    @OneToMany(mappedBy = "agentInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PartsPurchase> partsPurchases;
-
-    @OneToMany(mappedBy = "agentInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PartsFit> partsFits;
-
-    @OneToMany(mappedBy = "agentInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PartsStore> partsStores;
-
-    @OneToMany(mappedBy = "agentInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<DatasumEntry> datasumEntries;
-
-    @OneToMany(mappedBy = "agentInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ForecastResult> forecastResults;
+    // 已移除所有 @OneToMany 关联字段
 }

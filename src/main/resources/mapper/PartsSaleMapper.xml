@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.PartsSaleMapper">
+    <select id="findTopSellingParts" resultType="map">
+        SELECT TOP ${limit}
+        ps.sale_part_id as partId,
+        pi.part_name as partName,
+        SUM(ps.sale_part_num) as value
+        FROM parts_sale ps
+        JOIN parts_info pi ON ps.sale_part_id = pi.id
+        <where>
+            <if test="agentId != null">
+                ps.agent_id = #{agentId}
+            </if>
+        </where>
+        GROUP BY ps.sale_part_id, pi.part_name
+        ORDER BY value DESC
+    </select>
+
+    <select id="findByPartsInfoIdOrderBySaleDateDesc" resultType="com.projectwz.partsforecast.entity.PartsSale">
+        SELECT TOP ${limit} * FROM parts_sale
+        WHERE sale_part_id = #{partsId}
+        ORDER BY sale_date DESC
+    </select>
+
+    <select id="findByPartsInfoIdAndSaleDateBetweenOrderBySaleDateAsc" resultType="com.projectwz.partsforecast.entity.PartsSale">
+        SELECT * FROM parts_sale
+        WHERE sale_part_id = #{partsId}
+          AND sale_date BETWEEN #{startDate} AND #{endDate}
+        ORDER BY sale_date ASC
+    </select>
+</mapper>

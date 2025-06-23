@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.PartsStoreMapper">
+    <select id="findTopByPartsInfoIdOrderByStoreTimeDesc" resultType="com.projectwz.partsforecast.entity.PartsStore">
+        SELECT TOP 1 * FROM parts_store
+        WHERE store_part_id = #{partsId}
+        ORDER BY store_time DESC
+    </select>
+
+    <select id="findTopTurnoverParts" resultType="map">
+        SELECT TOP ${limit}
+        latest_ps.partId,
+        latest_ps.partName,
+        latest_ps.storePartRate as value
+        FROM (
+        SELECT
+        pi.id as partId,
+        pi.part_name as partName,
+        ps.store_part_rate as storePartRate,
+        ROW_NUMBER() OVER(PARTITION BY ps.store_part_id ORDER BY ps.store_time DESC) as rn
+        FROM parts_store ps
+        JOIN parts_info pi ON ps.store_part_id = pi.id
+        <where>
+            <if test="agentId != null">
+                ps.agent_id = #{agentId}
+            </if>
+        </where>
+        ) as latest_ps
+        WHERE latest_ps.rn = 1
+        ORDER BY value DESC
+    </select>
+</mapper>

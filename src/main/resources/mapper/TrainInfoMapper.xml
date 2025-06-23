@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.projectwz.partsforecast.mapper.TrainInfoMapper">
+    <resultMap id="TrainInfoResultMap" type="com.projectwz.partsforecast.entity.TrainInfo">
+        <id property="id" column="id"/>
+        <result property="partsLen" column="parts_len"/>
+        <association property="partsInfo" javaType="com.projectwz.partsforecast.entity.PartsInfo">
+            <id property="id" column="parts_id"/>
+        </association>
+    </resultMap>
+
+    <select id="findByAgentId" resultMap="TrainInfoResultMap">
+        SELECT ti.id, ti.parts_len, ti.parts_id
+        FROM train_info ti
+                 JOIN parts_info pi ON ti.parts_id = pi.id
+        WHERE pi.agent_id = #{agentId}
+    </select>
+</mapper>
